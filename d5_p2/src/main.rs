@@ -1,5 +1,6 @@
 use std::env;
 use std::fs;
+use std::io::Read;
 
 fn main() {
     const RADIX: u32 = 10;
@@ -36,7 +37,13 @@ fn main() {
             },
             3 => { //input: input->p1
                 let out = cmds[n+1];
-                cmds[out as usize] = 5; //TODO change to not hardcode for input
+                // cmds[out as usize] = 5; //TODO change to not hardcode for input
+                let input: i32 = std::io::stdin()
+                    .bytes() 
+                    .next()
+                    .and_then(|result| result.ok())
+                    .map(|byte| byte as i32).unwrap();
+                cmds[out as usize] = input-48; //convert ascii code to value
                 n+=2;
             },
             4 => { //output: p1->output
